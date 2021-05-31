@@ -35,7 +35,7 @@ function writePassword() {
     window.alert("Click ok to include special characters");
     window.alert("Click ok to include uppercase characters");
     window.alert("Click ok to include lowercase characters");
-    window.alert("Click ok to include special characters");
+    window.alert("Click ok to include numbers");
     password(); 
   }
 
