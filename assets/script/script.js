@@ -1,44 +1,73 @@
-// Get references to the #generate element
-var generateBtn = document.querySelector("#generate");
+// identify submit button
+const generateBtn = document.querySelector("#generate");
 
-// Get references to the #password element
-var passwordText = document.querySelector("#password");
+// identify password text placeholder
+let passwordText = document.querySelector("#password");
 
-// list of possible characters that can be inculded in password
-var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
+// identify potential characters
+let chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789!@#$%^&*()'
 
-var passwordResult = "";
+// initial userPassword variable
+let usersPassword = '';
 
-// Write password to the #password input
-function writePassword() {
+function generatePassword() {
+
+  let usersPasswordLength = window.prompt("how many characters would you like your password to be?")
   
-  var passwordLength = window.prompt("How many characters would you like your password to contain?");
-  
-  
-  var password = function generatePassword() {
-    // passwordResult var is set to empty string since each time the generate button is clicked, the value of passwordReult will change
-    passwordResult = "";
-    // below is where the passowrd is generated, by looping through my chars string and selecting a random character passwordLength number of times
-    for(var i = 0; i < passwordLength; i++) {
+  if(usersPasswordLength < 8) {
+    window.alert("password must be more than 8 characters")
+    
+  } else if(usersPasswordLength > 128) {
+    window.alert("password must be less than 128 characters")
+  }
+
+  let includeNumbers = window.prompt("would you like to include numbers? please enter yes or no.")
+  let includeSpecialChars = window.prompt("would you like to include special characters?")
+
+  if(includeNumbers === 'yes' && includeSpecialChars === 'yes' ) {
+
+    // create a password that includes both numbers AND special characters
+    for(var i = 0; i < usersPasswordLength; i++) {
       var number = Math.floor(Math.random() * chars.length);
-      passwordResult += chars.substring(number, number + 1);
+      usersPassword += chars.substring(number, number + 1);
+      passwordText.value = usersPassword
     } 
-  // below is where the resulting password is will be injected into passwordText
-  passwordText.value = passwordResult;
+
+  } else if(includeNumbers === 'no' && includeSpecialChars === 'yes') {
+
+    // if no, remove numbers from string but INCLUDE special characters
+    chars = chars.replace('123456789', '')
+
+    for(var i = 0; i < usersPasswordLength; i++) {
+      var number = Math.floor(Math.random() * chars.length);
+      usersPassword += chars.substring(number, number + 1);
+      passwordText.value = usersPassword
+    } 
+    
+  } else if(includeNumbers === 'yes' && includeSpecialChars === 'no') {
+
+    // create a password that includes numbers but NO special characters
+    chars = chars.replace('!@#$%^&*()', '')
+    for(var i = 0; i < usersPasswordLength; i++) {
+      var number = Math.floor(Math.random() * chars.length);
+      usersPassword += chars.substring(number, number + 1);
+      passwordText.value = usersPassword
+    } 
+
+  } else if(includeNumbers === 'no' && includeSpecialChars === 'no') {
+
+    // create a password that doesn't include numbers OR special characters
+    chars = chars.replace('123456789!@#$%^&*()', '')
+    for(var i = 0; i < usersPasswordLength; i++) {
+      var number = Math.floor(Math.random() * chars.length);
+      usersPassword += chars.substring(number, number + 1);
+      passwordText.value = usersPassword
+    } 
+  }
+
+  
 
 }
-  if(passwordLength <= 7 || passwordLength >= 129 ) {
-    window.alert('You need to enter a number between 8 and 128!');
-    writePassword();
-  }
-  else if(passwordLength >= 8 || passwordLength <= 128) {
-    window.alert("Click ok to include special characters");
-    window.alert("Click ok to include uppercase characters");
-    window.alert("Click ok to include lowercase characters");
-    window.alert("Click ok to include numbers");
-    password(); 
-  }
 
-}
-
-generateBtn.addEventListener("click", writePassword);
+// when btn is clicked, do this
+generateBtn.addEventListener("click", generatePassword);
